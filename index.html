@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>位置情報取得サンプル</title>
+
+  <!-- 動作処理 -->
+  <script>
+    // 「はい」ボタンがクリックされたときの処理
+    function openGoogleMap() {
+      // Geolocation APIに対応している
+      if (navigator.geolocation) {
+        // 現在地を取得
+        navigator.geolocation.getCurrentPosition(
+          // 取得成功した場合
+          function(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            var url = "https://www.google.com/maps?q=" + latitude + "," + longitude;
+            window.open(url, "_blank");
+          },
+          // 取得失敗した場合
+          function(error) {
+            // エラーメッセージを表示
+            switch(error.code) {
+              case 1: // PERMISSION_DENIED
+                alert("位置情報の利用が許可されていません");
+                break;
+              case 2: // POSITION_UNAVAILABLE
+                alert("現在位置が取得できませんでした");
+                break;
+              case 3: // TIMEOUT
+                alert("タイムアウトになりました");
+                break;
+              default:
+                alert("その他のエラー(エラーコード:"+error.code+")");
+                break;
+            }
+          }
+        );
+      // Geolocation APIに対応していない
+      } else {
+        alert("この端末では位置情報が取得できません");
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>位置情報取得サンプル</h1>
+  <button onclick="openGoogleMap()">はい</button>
+</body>
+</html>
